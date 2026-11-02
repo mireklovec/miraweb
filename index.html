@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#20261d">
+  <title>MiraWeb</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">MIRA<span>WEB</span></div>
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <nav id="nav">
+    <button data-page="home" class="active">Přehled</button>
+    <button data-page="vehicles">Vozidla</button>
+    <button data-page="diary">Deník</button>
+    <button data-page="tools">Užitečné</button>
+    <button data-page="ballistics">Balistika</button>
+  </nav>
+</header>
+
+<main>
+<section id="home" class="page active">
+  <div class="hero">
+    <div>
+      <p class="eyebrow">OSOBNÍ PALUBNÍ WEB</p>
+      <h1>Všechno důležité<br><span>na jednom místě.</span></h1>
+      <p class="muted">Vozidla, termíny, deník a praktické nástroje. Data zůstávají uložená v tomto zařízení.</p>
+    </div>
+    <div class="hero-mark">MW</div>
+  </div>
+  <div class="grid cards">
+    <article class="card stat"><small>VOZIDLA</small><strong id="vehicleCount">0</strong><span>evidovaných</span></article>
+    <article class="card stat"><small>TERMÍNY</small><strong id="dueCount">0</strong><span>do 60 dnů</span></article>
+    <article class="card stat"><small>DENÍK</small><strong id="diaryCount">0</strong><span>záznamů</span></article>
+  </div>
+  <div class="grid two">
+    <article class="card">
+      <h2>Nejbližší termíny</h2>
+      <div id="upcoming"></div>
+    </article>
+    <article class="card">
+      <h2>Rychlé akce</h2>
+      <div class="quick">
+        <button class="primary" data-go="vehicles">＋ Přidat vozidlo</button>
+        <button data-go="diary">＋ Nový záznam</button>
+        <button data-go="tools">⛽ Kalkulačka paliva</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="vehicles" class="page">
+  <div class="section-head"><div><p class="eyebrow">GARÁŽ</p><h1>Vozidla</h1></div><button class="primary" id="addVehicle">＋ Přidat vozidlo</button></div>
+  <div id="vehiclesList" class="vehicle-list"></div>
+</section>
+
+<section id="diary" class="page">
+  <div class="section-head"><div><p class="eyebrow">ZÁZNAMY</p><h1>Deník</h1></div><button class="primary" id="addDiary">＋ Nový záznam</button></div>
+  <div class="tabs">
+    <button class="tab active" data-dtype="ulovek">Úlovky</button>
+    <button class="tab" data-dtype="poznamka">Poznámky</button>
+  </div>
+  <div id="diaryList"></div>
+</section>
+
+<section id="tools" class="page">
+  <div class="section-head"><div><p class="eyebrow">NÁSTROJE</p><h1>Užitečné věci</h1></div></div>
+  <div class="grid two">
+    <article class="card tool">
+      <h2>⛽ Náklady na palivo</h2>
+      <label>Spotřeba (l/100 km)<input id="fuelCons" type="number" step="0.1" value="6"></label>
+      <label>Cena paliva (Kč/l)<input id="fuelPrice" type="number" step="0.1" value="40"></label>
+      <label>Vzdálenost (km)<input id="fuelKm" type="number" value="100"></label>
+      <div class="result" id="fuelResult">—</div>
+    </article>
+    <article class="card tool">
+      <h2>📏 Převod jednotek</h2>
+      <label>Hodnota<input id="convVal" type="number" value="100"></label>
+      <div class="row">
+        <select id="convType"><option value="kmmi">km → míle</option><option value="mikm">míle → km</option><option value="kggr">kg → g</option><option value="grkg">g → kg</option><option value="celf">°C → °F</option><option value="fcel">°F → °C</option></select>
+      </div>
+      <div class="result" id="convResult">—</div>
+    </article>
+    <article class="card">
+      <h2>🖨️ Tisk deníku</h2>
+      <p class="muted">Vytiskne aktuální stránku do PDF. V dialogu tisku zvol „Uložit jako PDF“.</p>
+      <button class="primary" onclick="window.print()">Vytisknout / PDF</button>
+    </article>
+    <article class="card">
+      <h2>💾 Záloha dat</h2>
+      <p class="muted">Exportuj data do souboru a později je můžeš obnovit.</p>
+      <button onclick="exportData()">Export JSON</button>
+      <label class="filebtn">Import JSON<input id="importFile" type="file" accept=".json" hidden></label>
+    </article>
+  </div>
+</section>
+
+<section id="ballistics" class="page">
+  <div class="section-head"><div><p class="eyebrow">POZNÁMKY</p><h1>Balistika</h1></div></div>
+  <article class="card">
+    <h2>Balistický deník</h2>
+    <p class="muted">Tady si můžeš evidovat ráži, typ střeliva, zbraň, datum střelby a vlastní poznámky. Záměrně zde není výpočet střeleckého řešení nebo korekcí míření.</p>
+    <div class="grid two">
+      <label>Ráže<input id="balCal" placeholder="např. .308 Win"></label>
+      <label>Střelivo<input id="balAmmo" placeholder="výrobce / typ"></label>
+      <label>Zbraň<input id="balGun" placeholder="označení"></label>
+      <label>Datum<input id="balDate" type="date"></label>
+    </div>
+    <label>Poznámka<textarea id="balNote" rows="4" placeholder="Poznámky ke střelbě, vybavení nebo výsledku..."></textarea></label>
+    <button class="primary" id="saveBal">Uložit záznam</button>
+    <div id="balList" class="list"></div>
+  </article>
+</section>
+</main>
+
+<div id="modal" class="modal">
+  <div class="modal-box">
+    <button class="close" id="closeModal">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+<footer>MiraWeb • lokální verze • data se ukládají v prohlížeči</footer>
+<script src="script.js"></script>
+</body>
+</html>
