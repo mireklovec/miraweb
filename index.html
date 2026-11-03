@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#20261d"><title>MiraWeb</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="brand">MIRA<span>WEB</span></div><button class="menu-btn" id="menuBtn">☰</button><nav id="nav">
+<button data-page="home" class="active">Přehled</button><button data-page="catches">Úlovky</button><button data-page="ballistics">Balistika</button><button data-page="diary">Deník</button><button data-page="tools">Užitečné</button><button data-page="vehicles">Vozový park</button><button data-page="account">Účet</button>
+</nav></header>
+<main>
+<section id="home" class="page active"><div class="hero"><div><p class="eyebrow">MIRAWEB</p><h1>Všechno důležité<br><span>na jednom místě.</span></h1><p class="muted">Úlovky, statistiky, balistika, deník a vozový park v jednom přehledném webu.</p></div><div class="hero-mark">MW</div></div>
+<div class="quick-grid"><button class="quick-card" data-go="catches"><b>🦌 Úlovky</b><span>Skoč na úlovky a statistiky</span></button><button class="quick-card" data-go="ballistics"><b>🎯 Balistika</b><span>Skoč na balistiku</span></button><button class="quick-card" data-go="diary"><b>📓 Deník</b><span>Přidej nebo prohlédni záznamy</span></button><button class="quick-card" data-go="vehicles"><b>🚙 Vozový park</b><span>Termíny a servis vozidel</span></button></div>
+<div class="cards"><article class="card stat"><small>ÚLOVKY</small><strong id="catchCount">0</strong><span>celkem kusů</span></article><article class="card stat"><small>UŽIVATEL</small><strong id="userName">Host</strong><span id="userState">veřejný přístup</span></article><article class="card stat"><small>VOZIDLA</small><strong id="vehicleCount">0</strong><span>evidovaných</span></article></div>
+<div class="grid two"><article class="card"><h2>Nejnovější úlovky</h2><div id="homeCatches"></div></article><article class="card"><h2>Nejbližší termíny</h2><div id="upcoming"></div></article></div></section>
+
+<section id="catches" class="page"><div class="section-head"><div><p class="eyebrow">ÚLOVKY</p><h1>Úlovky</h1></div><button class="primary" id="addCatch">＋ Přidat úlovek</button></div>
+<div class="subtabs"><button class="subtab active" data-catchview="records">Podle data</button><button class="subtab" data-catchview="stats">Statistiky</button></div>
+<div id="catchRecords"></div><div id="catchStats" class="hidden"></div></section>
+
+<section id="ballistics" class="page"><div class="section-head"><div><p class="eyebrow">VÝPOČET</p><h1>Balistika</h1></div></div><article class="card"><h2>Balistická kalkulačka</h2><p class="muted">Výpočet je určený jako obecná fyzikální pomůcka. Výsledky jsou pouze orientační a nenahrazují ověření na střelnici.</p><div class="grid two"><label>Počáteční rychlost (m/s)<input id="bVel" type="number" value="800"></label><label>Hmotnost střely (g)<input id="bMass" type="number" step="0.1" value="9.5"></label><label>Balistický koeficient BC<input id="bBc" type="number" step="0.001" value="0.45"></label><label>Vzdálenost (m)<input id="bDist" type="number" value="100"></label><label>Úsťová výška (m)<input id="bHeight" type="number" step="0.01" value="0.05"></label><label>Teplota (°C)<input id="bTemp" type="number" value="15"></label></div><button class="primary" id="calcBal">Spočítat</button><div id="balResult" class="result-grid"></div></article></section>
+
+<section id="diary" class="page"><div class="section-head"><div><p class="eyebrow">ZÁZNAMY</p><h1>Deník</h1></div><button class="primary" id="addDiary">＋ Nový záznam</button></div><div id="diaryList"></div></section>
+
+<section id="tools" class="page"><div class="section-head"><div><p class="eyebrow">NÁSTROJE</p><h1>Užitečné věci</h1></div></div><div class="grid two"><article class="card tool"><h2>⛽ Náklady na palivo</h2><label>Spotřeba (l/100 km)<input id="fuelCons" type="number" step="0.1" value="6"></label><label>Cena paliva (Kč/l)<input id="fuelPrice" type="number" step="0.1" value="40"></label><label>Vzdálenost (km)<input id="fuelKm" type="number" value="100"></label><div class="result" id="fuelResult">—</div></article><article class="card"><h2>💾 Záloha dat</h2><p class="muted">Export a import lokálních dat. Stávající data z původní verze se při prvním spuštění zachovají.</p><button onclick="exportData()">Export JSON</button><label class="filebtn">Import JSON<input id="importFile" type="file" accept=".json" hidden></label></article></div></section>
+
+<section id="vehicles" class="page"><div class="section-head"><div><p class="eyebrow">GARÁŽ</p><h1>Vozový park</h1></div><button class="primary" id="addVehicle">＋ Přidat vozidlo</button></div><div id="vehiclesList" class="vehicle-list"></div></section>
+
+<section id="account" class="page"><div class="section-head"><div><p class="eyebrow">ÚČET</p><h1>Přihlášení</h1></div></div><div class="grid two"><article class="card"><h2>Přihlášení</h2><label>E-mail<input id="loginEmail" type="email"></label><label>Heslo<input id="loginPass" type="password"></label><button class="primary" id="loginBtn">Přihlásit</button></article><article class="card"><h2>Registrace</h2><p class="muted">Veřejná verze je připravená na napojení skutečného účtu. Tato verze používá lokální demo účet v prohlížeči.</p><label>Jméno<input id="regFirst"></label><label>Příjmení<input id="regLast"></label><label>E-mail<input id="regEmail" type="email"></label><label>Heslo<input id="regPass" type="password"></label><button id="registerBtn">Vytvořit demo účet</button></article></div><div id="accountMsg" class="card hidden"></div></section>
+</main>
+<nav class="bottom-nav"><button data-page="home">⌂<span>Přehled</span></button><button data-page="catches">🦌<span>Úlovky</span></button><button data-page="ballistics">🎯<span>Balistika</span></button><button data-page="vehicles">🚙<span>Vozový park</span></button><button data-page="account">●<span>Účet</span></button></nav>
+<div id="modal" class="modal"><div class="modal-box"><button class="close" id="closeModal">×</button><div id="modalContent"></div></div></div><footer>MiraWeb • verze 2 • lokální data</footer>
+<script src="script.js"></script></body></html>
